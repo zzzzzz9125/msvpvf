@@ -1,3 +1,10 @@
+# *NOTE*
+*This is a modified version based on [MSVPVF](https://sr.ht/~mrpapersonic/msvpvf/). I didn't make too many changes to the original code, but simply adapted it to my own preferences!*
+
+*There are two versions of GUI in English and Chinese. To build an English one, use ```make gui```; To build a Chinese one, use ```make guicn```.*
+
+<br>**Here's the original README.md:**
+
 # msvpvf
 This repository has moved to [sourcehut](https://sr.ht/~mrpapersonic/msvpvf/). All future development will happen there.
 
