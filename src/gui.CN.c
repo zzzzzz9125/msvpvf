@@ -63,13 +63,13 @@ void display_file(char* path) {
 	TCHAR p[32];
 	switch (fgetc(file)) {
 		case 0xEF:
-			snprintf(p, 32, "ï¿½Ä¼ï¿½ï¿½æ±¾ï¿½ï¿½%s %d", "VEGAS Pro", f_version);
+			snprintf(p, 32, "ÎÄ¼þ°æ±¾£º%s %d", "VEGAS Pro", f_version);
 			break;
 		case 0xF6:
-			snprintf(p, 32, "ï¿½Ä¼ï¿½ï¿½æ±¾ï¿½ï¿½%s %d", "Movie Studio", f_version);
+			snprintf(p, 32, "ÎÄ¼þ°æ±¾£º%s %d", "Movie Studio", f_version);
 			break;
 		default:
-			snprintf(p, 32, "ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½");
+			snprintf(p, 32, "·Ç¹¤³ÌÎÄ¼þ£¡");
 			break;
 	}
 	SendMessage(hWndVersion, WM_SETTEXT, (WPARAM)0, (LPARAM)p);
@@ -86,7 +86,7 @@ char* open_file(HWND hWnd) {
 	ofn.lpstrFile = filename;
 	ofn.lpstrFile[0] = '\0';
 	ofn.nMaxFile = 256;
-	ofn.lpstrFilter = "ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½(*.veg;*.vf)\0*.veg;*.vf\0ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½\0*.*\0";
+	ofn.lpstrFilter = "¹¤³ÌÎÄ¼þ(*.veg;*.vf)\0*.veg;*.vf\0ËùÓÐÎÄ¼þ\0*.*\0";
 	ofn.nFilterIndex = 1;
 
 	if (GetOpenFileName(&ofn) == 0) {
@@ -101,8 +101,8 @@ char* open_file(HWND hWnd) {
 void save_file(HWND hWnd, char* input_file) {
 	if (strcmp(input_file, " ") == 0) {
 		MessageBox(hWnd,
-					TEXT("ï¿½ï¿½ï¿½È´ï¿½Ò»ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½"),
-					TEXT("ï¿½Ç·ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½"),
+					TEXT("ÇëÏÈ´ò¿ªÒ»¸öÎÄ¼þ£¡"),
+					TEXT("·Ç·¨ÎÄ¼þ£¡"),
 					MB_ICONEXCLAMATION);
 		return;
 	}
@@ -123,12 +123,12 @@ void save_file(HWND hWnd, char* input_file) {
 	ofn.nMaxFile = 256;
 	switch(type){
 		case veg:{
-			ofn.lpstrFilter = "VEGAS Pro ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½(*.veg)\0*.veg\0ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½\0*.*\0";
+			ofn.lpstrFilter = "VEGAS Pro ¹¤³ÌÎÄ¼þ(*.veg)\0*.veg\0ËùÓÐÎÄ¼þ\0*.*\0";
 			ofn.lpstrDefExt = "veg";
 			break;
 		}
 		case vf:{
-			ofn.lpstrFilter = "Movie Studio ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½(*.vf)\0*.vf\0ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½\0*.*\0";
+			ofn.lpstrFilter = "Movie Studio ¹¤³ÌÎÄ¼þ(*.vf)\0*.vf\0ËùÓÐÎÄ¼þ\0*.*\0";
 			ofn.lpstrDefExt = "vf";
 			break;
 		}
@@ -140,12 +140,12 @@ void save_file(HWND hWnd, char* input_file) {
 	}
 
 	if (CopyFile((TCHAR*)input_file, (TCHAR*)output_file, 0) == 0) {
-		MessageBox(hWnd, TEXT("ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½È·ï¿½ï¿½Ô­ï¿½Ä¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ú£ï¿½"), TEXT("ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Ê§ï¿½Ü£ï¿½"), MB_ICONEXCLAMATION);
+		MessageBox(hWnd, TEXT("¸´ÖÆÔ­¹¤³ÌÎÄ¼þÊ§°Ü£¬ÇëÈ·ÈÏÔ­ÎÄ¼þÊÇ·ñ´æÔÚ£¿"), TEXT("±£´æÎÄ¼þÊ§°Ü£¡"), MB_ICONEXCLAMATION);
                 return;
 	}
 	FILE* output = fopen(output_file, "r+b");
 	if (output == NULL) {
-		MessageBox(hWnd, TEXT("ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Â¹ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Ê±Ê§ï¿½Ü£ï¿½"), TEXT("ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Ê§ï¿½Ü£ï¿½"), MB_ICONEXCLAMATION); 
+		MessageBox(hWnd, TEXT("³¢ÊÔ±£´æÐÂ¹¤³ÌÎÄ¼þÊ±Ê§°Ü£¡"), TEXT("±£´æÎÄ¼þÊ§°Ü£¡"), MB_ICONEXCLAMATION); 
 		return;
 	}
 
@@ -180,7 +180,7 @@ void AddControls(HWND hWnd) {
 	}
 	SendMessage(hWndComboBox, CB_SETCURSEL, (WPARAM)11, (LPARAM)0);
 	/* Open File */
-	HWND open_button = CreateWindow("Button", "ï¿½ï¿½", WS_VISIBLE | WS_CHILD, (int)((350 - 50)/2), 5, 50, 20, hWnd, (HMENU)OPEN_FILE_BUTTON, NULL, NULL);
+	HWND open_button = CreateWindow("Button", "´ò¿ª", WS_VISIBLE | WS_CHILD, (int)((350 - 50)/2), 5, 50, 20, hWnd, (HMENU)OPEN_FILE_BUTTON, NULL, NULL);
 	/* Type */
 	TCHAR listbox_items[][13] = {TEXT("VEGAS Pro"), TEXT("Movie Studio")};
 	hWndListBox = CreateWindow("Listbox", NULL, WS_VISIBLE | WS_CHILD | LBS_NOTIFY | WS_VSCROLL | WS_BORDER | LBS_NOTIFY, (int)((350 - 100)/2), 55, 100, 40, hWnd, (HMENU)LISTBOX, NULL, NULL);
@@ -190,11 +190,11 @@ void AddControls(HWND hWnd) {
 	}
 	SendMessage(hWndListBox, LB_SETCURSEL, (WPARAM)0, (LPARAM)0);
 	/* Save File */
-	HWND save_button = CreateWindow("Button", "ï¿½ï¿½ï¿½ï¿½", WS_VISIBLE | WS_CHILD, (int)((350 - 50)/2), 90, 50, 20, hWnd, (HMENU)SAVE_FILE_BUTTON, NULL, NULL);
+	HWND save_button = CreateWindow("Button", "±£´æ", WS_VISIBLE | WS_CHILD, (int)((350 - 50)/2), 90, 50, 20, hWnd, (HMENU)SAVE_FILE_BUTTON, NULL, NULL);
 	/* Version and Type display */
 	hWndVersion = CreateWindow("Edit", "", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_READONLY | ES_CENTER | ES_MULTILINE | SS_CENTER, (int)((350 - 150)/2), 120, 150, 40, hWnd, (HMENU)VERSION, NULL, NULL);
 	if (open_button == NULL || save_button == NULL || hWndListBox == NULL || hWndComboBox == NULL)
-		MessageBox(hWnd, TEXT("ï¿½ï¿½Õ¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½"), TEXT("GUIï¿½Þ·ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½"), MB_ICONEXCLAMATION); 
+		MessageBox(hWnd, TEXT("ÄãÕ¦¸ã³ÉÕâÑùµÄ£¿£¿£¿"), TEXT("GUIÎÞ·¨³õÊ¼»¯£¡"), MB_ICONEXCLAMATION); 
 }
 
 bool CALLBACK SetFont(HWND child, LPARAM font) {
@@ -254,7 +254,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR args, int
 
 	if (!RegisterClass(&wc)) return -1;
 
-	CreateWindowEx(WS_EX_ACCEPTFILES, TEXT("msvpvf"), TEXT("Vegasï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½æ±¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"), WS_OVERLAPPED | WS_VISIBLE | WS_MINIMIZEBOX | WS_SYSMENU, 100, 100, 350, 200, NULL, NULL, hInstance, NULL);
+	CreateWindowEx(WS_EX_ACCEPTFILES, TEXT("msvpvf"), TEXT("Vegas¹¤³ÌÎÄ¼þ°æ±¾½µ¼¶¹¤¾ß"), WS_OVERLAPPED | WS_VISIBLE | WS_MINIMIZEBOX | WS_SYSMENU, 100, 100, 350, 200, NULL, NULL, hInstance, NULL);
 
 	MSG msg = {0};
 
