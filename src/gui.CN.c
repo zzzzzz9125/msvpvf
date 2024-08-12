@@ -63,13 +63,13 @@ void display_file(char* path) {
 	TCHAR p[32];
 	switch (fgetc(file)) {
 		case 0xEF:
-			snprintf(p, 32, "File version: %s %d", "VEGAS Pro", f_version);
+			snprintf(p, 32, "文件版本：%s %d", "VEGAS Pro", f_version);
 			break;
 		case 0xF6:
-			snprintf(p, 32, "File version: %s %d", "Movie Studio", f_version);
+			snprintf(p, 32, "文件版本：%s %d", "Movie Studio", f_version);
 			break;
 		default:
-			snprintf(p, 32, "Not Project File!");
+			snprintf(p, 32, "非工程文件！");
 			break;
 	}
 	SendMessage(hWndVersion, WM_SETTEXT, (WPARAM)0, (LPARAM)p);
@@ -86,7 +86,7 @@ char* open_file(HWND hWnd) {
 	ofn.lpstrFile = filename;
 	ofn.lpstrFile[0] = '\0';
 	ofn.nMaxFile = 256;
-	ofn.lpstrFilter = "Project files(*.veg;*.vf)\0*.veg;*.vf\0All files\0*.*\0";
+	ofn.lpstrFilter = "工程文件(*.veg;*.vf)\0*.veg;*.vf\0所有文件\0*.*\0";
 	ofn.nFilterIndex = 1;
 
 	if (GetOpenFileName(&ofn) == 0) {
@@ -101,8 +101,8 @@ char* open_file(HWND hWnd) {
 void save_file(HWND hWnd, char* input_file) {
 	if (strcmp(input_file, " ") == 0) {
 		MessageBox(hWnd,
-					TEXT("Please open a file first!"),
-					TEXT("Invalid input file!"),
+					TEXT("请先打开一个文件！"),
+					TEXT("非法文件！"),
 					MB_ICONEXCLAMATION);
 		return;
 	}
@@ -123,12 +123,12 @@ void save_file(HWND hWnd, char* input_file) {
 	ofn.nMaxFile = 256;
 	switch(type){
 		case veg:{
-			ofn.lpstrFilter = "VEGAS Pro project files(*.veg)\0*.veg\00All files\0*.*\0";
+			ofn.lpstrFilter = "VEGAS Pro 工程文件(*.veg)\0*.veg\0所有文件\0*.*\0";
 			ofn.lpstrDefExt = "veg";
 			break;
 		}
 		case vf:{
-			ofn.lpstrFilter = "Movie Studio project files(*.vf)\0*.vf\00All files\0*.*\0";
+			ofn.lpstrFilter = "Movie Studio 工程文件(*.vf)\0*.vf\0所有文件\0*.*\0";
 			ofn.lpstrDefExt = "vf";
 			break;
 		}
@@ -140,12 +140,12 @@ void save_file(HWND hWnd, char* input_file) {
 	}
 
 	if (CopyFile((TCHAR*)input_file, (TCHAR*)output_file, 0) == 0) {
-		MessageBox(hWnd, TEXT("Failed to copy original project file! Does the destination file already exist?"), TEXT("Saving project failed!"), MB_ICONEXCLAMATION);
+		MessageBox(hWnd, TEXT("复制原工程文件失败，请确认原文件是否存在？"), TEXT("保存文件失败！"), MB_ICONEXCLAMATION);
                 return;
 	}
 	FILE* output = fopen(output_file, "r+b");
 	if (output == NULL) {
-		MessageBox(hWnd, TEXT("Failed to save project file!"), TEXT("Saving project failed!"), MB_ICONEXCLAMATION); 
+		MessageBox(hWnd, TEXT("尝试保存新工程文件时失败！"), TEXT("保存文件失败！"), MB_ICONEXCLAMATION); 
 		return;
 	}
 
@@ -180,7 +180,7 @@ void AddControls(HWND hWnd) {
 	}
 	SendMessage(hWndComboBox, CB_SETCURSEL, (WPARAM)11, (LPARAM)0);
 	/* Open File */
-	HWND open_button = CreateWindow("Button", "Open", WS_VISIBLE | WS_CHILD, (int)((350 - 50)/2), 5, 50, 20, hWnd, (HMENU)OPEN_FILE_BUTTON, NULL, NULL);
+	HWND open_button = CreateWindow("Button", "打开", WS_VISIBLE | WS_CHILD, (int)((350 - 50)/2), 5, 50, 20, hWnd, (HMENU)OPEN_FILE_BUTTON, NULL, NULL);
 	/* Type */
 	TCHAR listbox_items[][13] = {TEXT("VEGAS Pro"), TEXT("Movie Studio")};
 	hWndListBox = CreateWindow("Listbox", NULL, WS_VISIBLE | WS_CHILD | LBS_NOTIFY | WS_VSCROLL | WS_BORDER | LBS_NOTIFY, (int)((350 - 100)/2), 55, 100, 40, hWnd, (HMENU)LISTBOX, NULL, NULL);
@@ -190,11 +190,11 @@ void AddControls(HWND hWnd) {
 	}
 	SendMessage(hWndListBox, LB_SETCURSEL, (WPARAM)0, (LPARAM)0);
 	/* Save File */
-	HWND save_button = CreateWindow("Button", "Save", WS_VISIBLE | WS_CHILD, (int)((350 - 50)/2), 90, 50, 20, hWnd, (HMENU)SAVE_FILE_BUTTON, NULL, NULL);
+	HWND save_button = CreateWindow("Button", "保存", WS_VISIBLE | WS_CHILD, (int)((350 - 50)/2), 90, 50, 20, hWnd, (HMENU)SAVE_FILE_BUTTON, NULL, NULL);
 	/* Version and Type display */
 	hWndVersion = CreateWindow("Edit", "", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_READONLY | ES_CENTER | ES_MULTILINE | SS_CENTER, (int)((350 - 150)/2), 120, 150, 40, hWnd, (HMENU)VERSION, NULL, NULL);
 	if (open_button == NULL || save_button == NULL || hWndListBox == NULL || hWndComboBox == NULL)
-		MessageBox(hWnd, TEXT("how did you even trigger this"), TEXT("GUI could not be initialized!"), MB_ICONEXCLAMATION); 
+		MessageBox(hWnd, TEXT("你咋搞成这样的？？？"), TEXT("GUI无法初始化！"), MB_ICONEXCLAMATION); 
 }
 
 bool CALLBACK SetFont(HWND child, LPARAM font) {
@@ -254,7 +254,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR args, int
 
 	if (!RegisterClass(&wc)) return -1;
 
-	CreateWindowEx(WS_EX_ACCEPTFILES, TEXT("msvpvf"), TEXT("Movie Studio / Vegas Pro version spoofer"), WS_OVERLAPPED | WS_VISIBLE | WS_MINIMIZEBOX | WS_SYSMENU, 100, 100, 350, 200, NULL, NULL, hInstance, NULL);
+	CreateWindowEx(WS_EX_ACCEPTFILES, TEXT("msvpvf"), TEXT("Vegas工程文件版本降级工具"), WS_OVERLAPPED | WS_VISIBLE | WS_MINIMIZEBOX | WS_SYSMENU, 100, 100, 350, 200, NULL, NULL, hInstance, NULL);
 
 	MSG msg = {0};
 
