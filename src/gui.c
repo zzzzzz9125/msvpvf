@@ -43,7 +43,7 @@
 #endif
 
 HWND hWndListBox, hWndComboBox, hWndVersion;
-int16_t version = 13;
+int16_t version = 19;
 enum types {
 	veg,
 	vf
